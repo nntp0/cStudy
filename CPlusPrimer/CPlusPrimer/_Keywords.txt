@@ -1,0 +1,6 @@
+Entering an End-of-File from the Keyboard
+	Windows => ctrl+z followed by enter key
+
+Syntax errors
+Type errors
+Declaration errors
