@@ -1,0 +1,25 @@
+By Default, Windows caches file data that is read from disks and written to disks. This implies that read operations read file data from the physical disk. Correspondingly, write operatrions write file data to the system file cache rathrer than to the disk, and this type of cache is referred to as a write-back cache. Caching is managed per file object.
+
+Caching occurs under the direction of the cache manager, which operates continuously while Windows is running. File data in the system file cache is written to the disk at intervals determined by the operating system, and the memory previously used by that file data is freed--this is referred to as flushing the cache.
+
+The policy of delaying the writing of the data to the file and holding it in the cache until the cache is flushed is called lazy writing, and it is triggered by the cache manager at a determinate time interval. The time at which a block of file data is flushed is partially based on the amount of time it has been stored in the cache and the amount of time since the data was last accessed in a read operation. This ensures that file data that is frequently read will stay accessible in the system file cache for the maximum amount of time.
+
+Windows caches file?
+    When a file I/O operation happens, windows system does not process every I/O operations frankly. Instead, system stores I/O data in a buffer, which is called as cache, until it overflows the buffer, or wating time is expired. This behavior reduces the total amount of process time of I/O operation because access to memory requires a lot of times.
+
+Cache manager?
+    Windows runs cache manager to manage cache system. Caching I/O files is managed by the only cache manager, so every process is guaranteed for security of caching system.
+
+The amount of I/O performance improvement that file data caching offers depends on the size of the file data block being read or written. When large blocks of file data are read and written, it is more likely that disk reads and writes will be necessary to finish the I/O operation. Caching system always store data in a buffer before system really access the physical memory. However, when the data is huge, then it always is bigger than buffer size, which leads access the physical memory at once. So, writing at the cache buffer becomes a unnecessary work. I/O performance will be increasingly impaired as more of this kind of I/O operation occurs.
+
+In these situations, caching can be turned off. This is done at the time file is opened by passing FILE_FLAG_NO_BUFFERING as a value for the dwFlagsAndAttributes parameter of CreateFile.
+
+The frequency at which flushing occurs is an important consideration that balances system performance with system reliability. If the system flushes the cache too often, the number of large write operations flushing incurs will degrade system performance significantly. If the system is not flushed often enough, then the likelihood is greater that either system memory will be depleted by the cache, or a sudden system failure(such as a loss of power to the computer) will happen before the flush. In the latter instance, the cached data will be lost.
+
+The lazy writer process queues one-eighth of the pages that have not been flushed recently to be written to disk. It constantly reevaluates the amout of data. Lazy writers do not flush temporary files, because the assumption is that they will be deleted by the application or system.
+
+Some applications, such as virus-checking software, require that their write operations be flushed to disk immediately; Windows provides this ability through write-though caching. A process enables wirte-through caching for a specific I/O operation by passing the FILE_FLAG_WRITE_THROUGH flag into its call to CreateFile.
+
+# Even if FILE_FLAG_WRITE_THROUGH flag is set, system writes buffer into the cache, but the cache manager flush the data into physical memory immediately.
+
+File system metadata is always cached. Therefore, to store any metadata changes to disk, the file must either be flushed or be opened with FILE_FLAG_WRITE_THROUGH.

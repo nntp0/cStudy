@@ -1,0 +1,10 @@
+Unicode?
+    모든 문자를 나타내기위한 세계표준.
+    UTF-8, UTF-16, UTF-32 등이 있으며, 윈도우즈는 기본적으로 UTF-16을 지원합니다.
+    윈도우즈 함수 또한 기본적으로 UTF-16 기반의 유니코드 함수와 ASCII 기반의 함수를 제공합니다. 일반적으로 ASCII 기반의 함수는 내부적으로 UTF-16 으로 변환되어 UTF 버전의 함수를 호출합니다.
+
+string safe 함수 에러시?
+    첫번째 내용을 \0으로 채우고 나머지는 0xfd로 채운다.
+
+# Cch 는 Count of CHaracters 의 약어
+# Cb 는 Count of Bytes 의 약어
